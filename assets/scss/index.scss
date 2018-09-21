@@ -1,10 +1,15 @@
 // Utils
-@import "./utils/variables";
+@import "./utils/variables"; // variables are intentionaly left first
+
+@import "./utils/border";
 @import "./utils/flex";
+@import "./utils/sizes";
+@import "./utils/spacing";
 @import "./utils/wrapper";
 
 // Base
 @import "./base/colors";
+@import "./base/text";
 @import "./base/resets";
 
 // Layout

@@ -10,9 +10,21 @@ interface MessageInterface {
 export default class Message extends React.Component <MessageInterface, {}> {
   render() {
     return (
-      <div className="message">
-        <div className="name">{ this.props.name }</div>
-        <div className="text">{ this.props.text }</div>
+      <div className="message flex flex--row">
+        <div className="message__image">
+          Image
+        </div>
+        <div className="f-grow">
+          <div className="pn-m-l">
+            <span className="bold">
+              { this.props.name }
+            </span>
+            <span className="s-s">
+              Time
+            </span>
+          </div>
+          <div>{ this.props.text }</div>
+        </div>
       </div>
     );
   }

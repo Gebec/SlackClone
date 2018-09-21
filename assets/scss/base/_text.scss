@@ -1,0 +1,13 @@
+.bold {
+  font-weight: bold;
+}
+
+.s {
+  &-s {
+    font-size: .8rem;
+  }
+
+  &-m {
+    font-size: 1rem;
+  }
+}
