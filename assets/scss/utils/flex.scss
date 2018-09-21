@@ -1,0 +1,33 @@
+.flex {
+  display: flex;
+
+  &--col {
+    flex-direction: column;
+
+    &__small {
+      height: 20%;
+      flex: 0 1 auto;
+      max-height: 5rem;
+    }
+
+    &__big {
+      height: 80%;
+      flex: 1 1 auto;
+    }
+  }
+
+  &--row {
+    flex-direction: row;
+
+    &__small {
+      width: 20%;
+      max-width: 20rem;
+      flex: 0 1 auto;
+    }
+
+    &__big {
+      width: 80%;
+      flex: 1 1 auto;
+    }
+  }
+}
