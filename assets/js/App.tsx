@@ -9,7 +9,7 @@ export default class App extends React.Component <{}> {
   render() {
     return (
       <div className="wrapper flex flex--row">
-        <div className=" flex flex--col flex--row--small">
+        <div className="flex flex--col flex--row--small bg-dark-magenta">
           <div className="flex--col__big">
             <RoomsList></RoomsList>
           </div>

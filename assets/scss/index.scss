@@ -1,14 +1,16 @@
 // Utils
+@import "./utils/variables";
 @import "./utils/flex";
 @import "./utils/wrapper";
 
 // Base
+@import "./base/colors";
 @import "./base/resets";
 
 // Layout
 @import "./layout/wireframe";
 
 // Components
-
+@import "./components/message";
 
 // Pages
