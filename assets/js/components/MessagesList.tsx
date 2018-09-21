@@ -25,7 +25,7 @@ export default class MessageList extends React.Component <{}> {
     ];
 
     return (
-      <div className="border">
+      <div>
         {DUMMY_MESSAGES.map((message, i) => <Message name={message.name} text={message.text} key={i}></Message>)}
       </div>
     );
