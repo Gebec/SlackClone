@@ -1,9 +1,17 @@
-.pn {
+.p-next {
   &-m {
     &-l {
       & > * + * {
         padding-left: .5rem;
       }
+    }
+  }
+}
+
+.p-all {
+  &-m {
+    & > * {
+      padding: .5rem;
     }
   }
 }

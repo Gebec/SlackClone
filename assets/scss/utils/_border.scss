@@ -1,5 +1,15 @@
 .border {
   &-grey {
-    
+    border: 2px solid #717274;
+
+    &--right {
+      border-right: 2px solid #717274;
+    }
+  }
+}
+
+.radius {
+  &-base {
+    border-radius: .5rem;
   }
 }

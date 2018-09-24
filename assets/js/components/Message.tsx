@@ -15,12 +15,12 @@ export default class Message extends React.Component <MessageInterface, {}> {
           Image
         </div>
         <div className="f-grow">
-          <div className="pn-m-l">
+          <div className="p-next-m-l">
             <span className="bold">
               { this.props.name }
             </span>
             <span className="s-s">
-              Time
+              Time and space
             </span>
           </div>
           <div>{ this.props.text }</div>
