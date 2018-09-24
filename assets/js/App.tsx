@@ -7,20 +7,26 @@ import NewRoomsForm from "./components/NewRoomForm";
 import RoomsList from "./components/RoomsList";
 import SendMessageInput from "./components/SendMessageInput";
 
-interface MessageInterface{
+interface MessageInterface {
   senderId: string,
   text: string
 }
 
-export default class App extends React.Component <{}, {messages: MessageInterface[]}, any> {
+interface stateInterface {
+  messages: MessageInterface[],
+  currentUser: any,
+}
+
+export default class App extends React.Component <{}, stateInterface, any> {
 
   constructor(props: any) {
     super(props);
     this.state = {
       messages: [],
+      currentUser: {},
     }
-
   }
+
   componentDidMount() {
 
     const chatManager = new Chatkit.ChatManager({
@@ -35,6 +41,9 @@ export default class App extends React.Component <{}, {messages: MessageInterfac
       .connect()
       .then(currentUser => {
         console.log("Connected as user ", currentUser.name);
+        this.setState({
+          currentUser: currentUser
+        });
         currentUser.subscribeToRoom({
           roomId: 16725237,
           hooks: {
@@ -45,11 +54,25 @@ export default class App extends React.Component <{}, {messages: MessageInterfac
               })
             }
           }
-        })
+        });
+        currentUser.getJoinableRooms()
+          .then(rooms => {
+
+          })
+          .catch(err => {
+            console.log(`Error getting joinable rooms: ${err}`)
+          })
       })
       .catch(error => {
         console.error("error:", error);
       });
+  }
+
+  sendMessage = (text) => {
+    this.state.currentUser.sendMessage({
+      text,
+      roomId: 16725237
+    })
   }
 
   render() {
@@ -68,7 +91,7 @@ export default class App extends React.Component <{}, {messages: MessageInterfac
             <MessageList messages={ this.state.messages }></MessageList>
           </div>
           <div className="flex--col__small">
-            <SendMessageInput></SendMessageInput>
+            <SendMessageInput sendMessage={ this.sendMessage }></SendMessageInput>
           </div>
         </div>
       </div>
