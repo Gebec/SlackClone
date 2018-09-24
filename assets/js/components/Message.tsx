@@ -4,7 +4,7 @@
 import * as React from "react";
 
 interface MessageInterface {
-  name: string,
+  username: string,
   text: string,
 }
 export default class Message extends React.Component <MessageInterface, {}> {
@@ -17,7 +17,7 @@ export default class Message extends React.Component <MessageInterface, {}> {
         <div className="f-grow">
           <div className="p-next-m-l">
             <span className="bold">
-              { this.props.name }
+              { this.props.username }
             </span>
             <span className="s-s">
               Time and space

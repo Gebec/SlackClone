@@ -7,7 +7,20 @@ import NewRoomsForm from "./components/NewRoomForm";
 import RoomsList from "./components/RoomsList";
 import SendMessageInput from "./components/SendMessageInput";
 
-export default class App extends React.Component <{}> {
+interface MessageInterface{
+  senderId: string,
+  text: string
+}
+
+export default class App extends React.Component <{}, {messages: MessageInterface[]}, any> {
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      messages: [],
+    }
+
+  }
   componentDidMount() {
 
     const chatManager = new Chatkit.ChatManager({
@@ -27,6 +40,9 @@ export default class App extends React.Component <{}> {
           hooks: {
             onNewMessage: message => {
               console.log(`Message text: ${message.text}`);
+              this.setState({
+                messages: [...this.state.messages, message]
+              })
             }
           }
         })
@@ -49,7 +65,7 @@ export default class App extends React.Component <{}> {
         </div>
         <div className="flex flex--col flex--row__big">
           <div className="flex--col__big">
-            <MessageList></MessageList>
+            <MessageList messages={ this.state.messages }></MessageList>
           </div>
           <div className="flex--col__small">
             <SendMessageInput></SendMessageInput>
