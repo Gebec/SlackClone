@@ -1,11 +1,41 @@
 
 import * as React from "react";
+import * as Chatkit from "@pusher/chatkit"
+import { instanceLocator, tokenProvider } from "../../config";
 import MessageList from "./components/MessagesList";
 import NewRoomsForm from "./components/NewRoomForm";
 import RoomsList from "./components/RoomsList";
 import SendMessageInput from "./components/SendMessageInput";
 
 export default class App extends React.Component <{}> {
+  componentDidMount() {
+
+    const chatManager = new Chatkit.ChatManager({
+      instanceLocator,
+      userId: "Admin",
+      tokenProvider: new Chatkit.TokenProvider({
+        url: tokenProvider
+      })
+    });
+
+    chatManager
+      .connect()
+      .then(currentUser => {
+        console.log("Connected as user ", currentUser.name);
+        currentUser.subscribeToRoom({
+          roomId: 16725237,
+          hooks: {
+            onNewMessage: message => {
+              console.log(`Message text: ${message.text}`);
+            }
+          }
+        })
+      })
+      .catch(error => {
+        console.error("error:", error);
+      });
+  }
+
   render() {
     return (
       <div className="wrapper flex flex--row">

@@ -9,7 +9,7 @@ export default class ChatRoomsList extends React.Component <{}> {
     ]
     return (
       <div>
-        { DUMMY_ROOMS.map((room, i) => <div>{ room }</div>)}
+        { DUMMY_ROOMS.map((room, i) => <div key={i}>{ room }</div>)}
       </div>
     );
   }
