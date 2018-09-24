@@ -20,6 +20,7 @@ interface roomsInterface {
 interface stateInterface {
   messages: MessageInterface[],
   currentUser: any,
+  activeRoomId: [number, null],
   joinedRooms: roomsInterface[],
   joinableRooms: roomsInterface[],
 }
@@ -31,6 +32,7 @@ export default class App extends React.Component <{}, stateInterface, any> {
     this.state = {
       messages: [],
       currentUser: {},
+      activeRoomId: null,
       joinedRooms: [],
       joinableRooms: [],
     }
@@ -52,27 +54,8 @@ export default class App extends React.Component <{}, stateInterface, any> {
         this.setState({
           currentUser: currentUser
         });
-        currentUser.subscribeToRoom({
-          roomId: 16725237,
-          hooks: {
-            onNewMessage: message => {
-              console.log(`Message text: ${message.text}`);
-              this.setState({
-                messages: [...this.state.messages, message]
-              })
-            }
-          }
-        });
-        currentUser.getJoinableRooms()
-          .then(joinableRooms => {
-            this.setState({
-              joinableRooms,
-              joinedRooms: currentUser.rooms
-            })
-          })
-          .catch(err => {
-            console.log(`Error getting joinable rooms: ${err}`)
-          })
+
+        this.getJoinableRooms();
       })
       .catch(error => {
         console.error("error:", error);
@@ -82,8 +65,44 @@ export default class App extends React.Component <{}, stateInterface, any> {
   sendMessage = (text) => {
     this.state.currentUser.sendMessage({
       text,
-      roomId: 16725237
+      roomId: this.state.activeRoomId,
     })
+  }
+
+  subscribeToRoom = (subscribeRoomId) => {
+    this.setState({
+      messages: [],
+    })
+    this.state.currentUser.subscribeToRoom({
+      roomId: subscribeRoomId,
+      hooks: {
+        onNewMessage: message => {
+          console.log(`Message text: ${message.text}`);
+          this.setState({
+            messages: [...this.state.messages, message]
+          })
+        }
+      }
+    })
+    .then(() => {
+      console.log('Room joined.');
+    })
+    .catch(() => {
+      console.error('Unable to join room!');
+    });
+  }
+
+  getJoinableRooms = () => {
+    this.state.currentUser.getJoinableRooms()
+      .then(joinableRooms => {
+        this.setState({
+          joinableRooms,
+          joinedRooms: this.state.currentUser.rooms
+        })
+      })
+      .catch(err => {
+        console.log(`Error getting joinable rooms: ${err}`)
+      })
   }
 
   render() {
@@ -91,7 +110,10 @@ export default class App extends React.Component <{}, stateInterface, any> {
       <div className="wrapper flex flex--row">
         <div className="flex flex--col flex--row--small bg-dark-magenta">
           <div className="flex--col__big">
-            <RoomsList rooms={ [...this.state.joinedRooms] }></RoomsList>
+            <RoomsList
+              rooms={ [...this.state.joinedRooms] }
+              subscribeToRoom={ this.subscribeToRoom }
+            ></RoomsList>
           </div>
           <div className="flex--col__small">
             <NewRoomsForm></NewRoomsForm>
