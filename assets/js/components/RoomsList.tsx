@@ -2,14 +2,18 @@
 
 import * as React from "react";
 
-export default class ChatRoomsList extends React.Component <{}> {
+interface roomsInterface {
+  name: string,
+  id: number
+}
+export default class ChatRoomsList extends React.Component <{rooms: roomsInterface[]}> {
   render() {
-    const DUMMY_ROOMS: string[] = [
-      'dummy room 1', 'dummy room 2', 'dummy room 3', 'dummy room 4', 'dummy room 5'
-    ]
     return (
       <div>
-        { DUMMY_ROOMS.map((room, i) => <div key={i}>{ room }</div>)}
+        <h3>Your rooms</h3>
+        <ul>
+          { this.props.rooms.map((room) => <li key={ room.id }>{ room.name }</li>)}
+        </ul>
       </div>
     );
   }

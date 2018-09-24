@@ -12,9 +12,16 @@ interface MessageInterface {
   text: string
 }
 
+interface roomsInterface {
+  name: string,
+  id: number
+}
+
 interface stateInterface {
   messages: MessageInterface[],
   currentUser: any,
+  joinedRooms: roomsInterface[],
+  joinableRooms: roomsInterface[],
 }
 
 export default class App extends React.Component <{}, stateInterface, any> {
@@ -24,11 +31,12 @@ export default class App extends React.Component <{}, stateInterface, any> {
     this.state = {
       messages: [],
       currentUser: {},
+      joinedRooms: [],
+      joinableRooms: [],
     }
   }
 
   componentDidMount() {
-
     const chatManager = new Chatkit.ChatManager({
       instanceLocator,
       userId: "Admin",
@@ -56,8 +64,11 @@ export default class App extends React.Component <{}, stateInterface, any> {
           }
         });
         currentUser.getJoinableRooms()
-          .then(rooms => {
-
+          .then(joinableRooms => {
+            this.setState({
+              joinableRooms,
+              joinedRooms: currentUser.rooms
+            })
           })
           .catch(err => {
             console.log(`Error getting joinable rooms: ${err}`)
@@ -80,7 +91,7 @@ export default class App extends React.Component <{}, stateInterface, any> {
       <div className="wrapper flex flex--row">
         <div className="flex flex--col flex--row--small bg-dark-magenta">
           <div className="flex--col__big">
-            <RoomsList></RoomsList>
+            <RoomsList rooms={ [...this.state.joinedRooms] }></RoomsList>
           </div>
           <div className="flex--col__small">
             <NewRoomsForm></NewRoomsForm>
