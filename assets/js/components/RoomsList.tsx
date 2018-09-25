@@ -10,6 +10,7 @@ interface roomsInterface {
 interface propsInterface {
   rooms: roomsInterface[],
   subscribeToRoom: (roomId: number) => void,
+  activeRoom: number|null
 }
 
 export default class ChatRoomsList extends React.Component <propsInterface> {
@@ -21,7 +22,12 @@ export default class ChatRoomsList extends React.Component <propsInterface> {
           { this.props.rooms.map(
             (room) =>
               <li key={ room.id }>
-                <a onClick={ (e: React.MouseEvent<HTMLElement>) => this.props.subscribeToRoom(room.id)}>
+                <a
+                  onClick={ (e: React.MouseEvent<HTMLElement>) => {
+                    this.props.subscribeToRoom(room.id)
+                  }}
+                  className={ "bold " + (room.id === this.props.activeRoom ? "active" : "not-active") }
+                >
                   { room.name }
                 </a>
               </li>

@@ -1,3 +1,11 @@
 .bg-dark-magenta {
   background-color: $color-dark-magenta;
 }
+
+.active {
+  color: $color-white;
+}
+
+.not-active {
+  color: $color-grey;
+}

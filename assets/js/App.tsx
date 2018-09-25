@@ -20,7 +20,7 @@ interface roomsInterface {
 interface stateInterface {
   messages: MessageInterface[],
   currentUser: any,
-  activeRoomId: [number, null],
+  activeRoomId: number|null,
   joinedRooms: roomsInterface[],
   joinableRooms: roomsInterface[],
 }
@@ -72,14 +72,16 @@ export default class App extends React.Component <{}, stateInterface, any> {
   subscribeToRoom = (subscribeRoomId) => {
     this.setState({
       messages: [],
+      activeRoomId: subscribeRoomId,
     })
+
     this.state.currentUser.subscribeToRoom({
       roomId: subscribeRoomId,
       hooks: {
         onNewMessage: message => {
           console.log(`Message text: ${message.text}`);
           this.setState({
-            messages: [...this.state.messages, message]
+            messages: [...this.state.messages, message],
           })
         }
       }
@@ -97,7 +99,7 @@ export default class App extends React.Component <{}, stateInterface, any> {
       .then(joinableRooms => {
         this.setState({
           joinableRooms,
-          joinedRooms: this.state.currentUser.rooms
+          joinedRooms: this.state.currentUser.rooms.sort((a, b) => a.roomId > b.roomId)
         })
       })
       .catch(err => {
@@ -113,6 +115,7 @@ export default class App extends React.Component <{}, stateInterface, any> {
             <RoomsList
               rooms={ [...this.state.joinedRooms] }
               subscribeToRoom={ this.subscribeToRoom }
+              activeRoom={ this.state.activeRoomId }
             ></RoomsList>
           </div>
           <div className="flex--col__small">
