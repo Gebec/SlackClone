@@ -69,6 +69,13 @@ export default class App extends React.Component <{}, stateInterface, any> {
     })
   }
 
+  addNewRoom = (name) => {
+    this.state.currentUser.createRoom({
+      name,
+    })
+    this.getJoinableRooms();
+  }
+
   subscribeToRoom = (subscribeRoomId) => {
     this.setState({
       messages: [],
@@ -119,7 +126,7 @@ export default class App extends React.Component <{}, stateInterface, any> {
             ></RoomsList>
           </div>
           <div className="flex--col__small">
-            <NewRoomsForm></NewRoomsForm>
+            <NewRoomsForm addNewRoom={ this.addNewRoom }></NewRoomsForm>
           </div>
         </div>
         <div className="flex flex--col flex--row__big">
